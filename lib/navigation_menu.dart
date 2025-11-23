@@ -1,7 +1,7 @@
 // File: lib/navigation_menu.dart
 import 'package:flutter/material.dart';
 import 'package:uni_sync/screens/bottom_nav_bar_page/calendar_page.dart';
-import 'package:uni_sync/screens/bottom_nav_bar_page/faculty_page.dart';
+import 'package:uni_sync/screens/bottom_nav_bar_page/faculty/faculty_page.dart';
 import 'package:uni_sync/screens/bottom_nav_bar_page/hackathon_page.dart';
 import 'package:uni_sync/screens/bottom_nav_bar_page/attendace_page.dart';
 import 'package:uni_sync/screens/bottom_nav_bar_page/profile_page.dart';
@@ -21,7 +21,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
   late final List<Widget> _pages = const [
     HackathonPage(),
     CalendarPage(),
-    AttendacePage(),
+    AttendancePage(),
     FacultyPage(),
     ProfilePage(),
   ];
