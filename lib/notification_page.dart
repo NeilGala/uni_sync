@@ -11,9 +11,20 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
   List<String> _notifications = [
-    'Welcome to UniSync — your profile is complete.',
+    'Welcome to UniSync. Your profile is complete.',
     'Hackathon registration opens tomorrow.',
     'New message from Admin.',
+    'Your timetable has been updated.',
+    'A new event has been added to the University Calendar.',
+    'Your assignment deadline is approaching.',
+    'Faculty uploaded new study materials.',
+    'Your semester fees receipt is ready.',
+    'Server maintenance scheduled for tonight.',
+    'Library book return reminder.',
+    'Your password was changed successfully.',
+    'Placement cell posted a new internship opening.',
+    'New announcement from the Vice Chancellor.',
+    'Your attendance report has been updated.',
   ];
 
   Future<void> _refresh() async {
@@ -30,7 +41,7 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const BlueAppBar(title: Text('Notifications')),
+      appBar: SimpleAppBar(title: 'Notifications'),
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: _notifications.isEmpty

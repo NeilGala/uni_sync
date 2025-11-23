@@ -132,16 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BlueAppBar(
-        title: const Text('Profile'),
-        actions: [
-          IconButton(
-            icon: Icon(_editing ? Icons.save : Icons.edit),
-            onPressed: _toggleEdit,
-            tooltip: _editing ? 'Save' : 'Edit',
-          ),
-        ],
-      ),
+      appBar: const SimpleAppBar(title: 'Profile'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Column(
@@ -179,7 +170,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
+
             const SizedBox(height: 16),
+
             _buildTextField(label: 'Name', controller: _nameCtrl),
             _buildTextField(label: 'Batch', controller: _batchCtrl),
             _buildTextField(label: 'Branch', controller: _branchCtrl),
@@ -194,13 +187,22 @@ class _ProfilePageState extends State<ProfilePage> {
               controller: _sapCtrl,
               keyboardType: TextInputType.number,
             ),
-            const SizedBox(height: 12),
-            if (!_editing)
-              ElevatedButton.icon(
-                onPressed: () => setState(() => _editing = true),
-                icon: const Icon(Icons.edit),
-                label: const Text('Edit Profile'),
+
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: _toggleEdit,
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 14,
+                ),
               ),
+              child: Text(
+                _editing ? 'Save Changes' : 'Edit Profile',
+                style: const TextStyle(fontSize: 16),
+              ),
+            ),
           ],
         ),
       ),

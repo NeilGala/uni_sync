@@ -111,7 +111,6 @@ class LoginScreen extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  // Centered icons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

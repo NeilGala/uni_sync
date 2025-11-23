@@ -1,247 +1,418 @@
 import 'package:flutter/material.dart';
+import 'package:uni_sync/app_bar.dart';
 
 class HackathonPage extends StatelessWidget {
   const HackathonPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // The screen title has been updated to "Hackathons/Opportunities"
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 40, 16, 16),
-        children: [
-          const Text(
-            "Opportunities and Events",
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          _filterHeader(),
-
-          const SizedBox(height: 16),
-
-          _eventCard(
-            title: "InnovateAI Hackathon 2024",
-            location: "San Francisco",
-            date: "Ends Oct 26",
-            description:
-                "Join us for a weekend of innovation, coding, and collaboration to build the next generation of AI applications.",
-            tags: ["Beginner Friendly"],
-            cta: "Apply Now",
-          ),
-
-          _eventCard(
-            title: "Software Engineer Intern",
-            location: "Remote",
-            date: "Deadline Nov 15",
-            description:
-                "Work on cutting edge projects and gain real world experience with a dynamic team at Meta.",
-            tags: ["Paid", "Remote"],
-            cta: "Apply Now",
-          ),
-
-          _eventCard(
-            title: "UX Design Workshop",
-            location: "Online",
-            date: "Nov 5",
-            description:
-                "Learn the fundamentals of user centric design from industry experts at Figma in this interactive workshop.",
-            tags: ["Beginner Friendly"],
-            cta: "Register",
-          ),
-
-          _emptyCard(),
-
-          const SizedBox(height: 20),
-
-          Align(
-            alignment: Alignment.bottomRight,
-            child: FloatingActionButton(
-              backgroundColor: Colors.blueAccent,
-              onPressed: () {},
-              child: const Icon(Icons.add, color: Colors.white),
-            ),
-          ),
-        ],
+      backgroundColor: const Color(0xFFF0F0F0), // Light gray background
+      appBar: const SimpleAppBar(title: 'Hackathons/Opportunities'),
+      body: const OpportunitiesAndEventsView(),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 24.0, right: 8.0),
+        child: FloatingActionButton(
+          onPressed: _showAddOpportunityModal, // Placeholder function
+          backgroundColor: Colors.blue,
+          child: const Icon(Icons.add, color: Colors.white),
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
+}
 
-  Widget _filterHeader() {
+// Placeholder for the Floating Action Button's onPressed logic
+void _showAddOpportunityModal() {
+  // Logic to show a modal or navigate to a new screen to add an opportunity
+}
+
+// Widget to hold the main content of the page
+class OpportunitiesAndEventsView extends StatelessWidget {
+  const OpportunitiesAndEventsView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // --- LIGHT THEME COLORS ---
+    const Color cardBackgroundColor = Colors.white;
+    const Color lightBackgroundColor = Color(
+      0xFFF0F0F0,
+    ); // Main body background
+    const Color darkTextColor = Colors.black87;
+    const Color lightIconColor = Colors.black54;
+
     return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xff111827),
-        borderRadius: BorderRadius.circular(16),
-      ),
+      color:
+          lightBackgroundColor, // Set the background color for the entire body
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              const Text(
-                "Opportunities and Events",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const Spacer(),
-              Icon(Icons.search, color: Colors.white.withOpacity(0.7)),
-            ],
+          // Search Icon (Top Right)
+          const Padding(
+            padding: EdgeInsets.only(right: 16.0, top: 12.0),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Icon(Icons.search, color: lightIconColor),
+            ),
           ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              _chip("All", true),
-              const SizedBox(width: 8),
-              _chip("Hackathons", false),
-              const SizedBox(width: 8),
-              _chip("Internships", false),
-              const SizedBox(width: 8),
-              _chip("Workshops", false),
-            ],
+
+          // Category Filters (All, Hackathons, Internships, Workshops)
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: CategoriesFilter(),
+          ),
+
+          // Main Scrollable List of Opportunities
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
+              child: Column(
+                children: const [
+                  OpportunityCard(
+                    title: 'InnovateAI Hackathon 2024',
+                    details:
+                        'Join us for a weekend of innovation, coding, and collaboration to build the next generation of AI applications.',
+                    location: 'San Francisco, CA',
+                    date: 'Ends Oct 25',
+                    tags: ['Beginner-Friendly'],
+                    isEvent: true,
+                    cardBackgroundColor: cardBackgroundColor,
+                    darkTextColor: darkTextColor,
+                    lightIconColor: lightIconColor,
+                  ),
+                  SizedBox(height: 16),
+                  OpportunityCard(
+                    title: 'Software Engineer Intern',
+                    details:
+                        'Work on cutting-edge projects and gain real-world experience with a dynamic team at Meta.',
+                    location: 'Remote',
+                    date: 'Deadline: Nov 15',
+                    tags: ['Paid', 'Remote'],
+                    isEvent: false,
+                    cardBackgroundColor: cardBackgroundColor,
+                    darkTextColor: darkTextColor,
+                    lightIconColor: lightIconColor,
+                  ),
+                  SizedBox(height: 16),
+                  OpportunityCard(
+                    title: 'UX Design Workshop',
+                    details:
+                        'Learn the fundamentals of user-centric design from industry experts at Figma in this interactive workshop.',
+                    location: 'Online',
+                    date: 'Nov 5',
+                    tags: ['Beginner-Friendly'],
+                    isEvent: true,
+                    cardBackgroundColor: cardBackgroundColor,
+                    darkTextColor: darkTextColor,
+                    lightIconColor: lightIconColor,
+                  ),
+                  SizedBox(height: 16),
+
+                  // Placeholder for "No Seminars Found"
+                  NoSeminarsFoundCard(
+                    cardBackgroundColor: cardBackgroundColor,
+                    darkTextColor: darkTextColor,
+                    lightIconColor: lightIconColor,
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _chip(String label, bool selected) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-      decoration: BoxDecoration(
-        color: selected ? Colors.blueAccent : const Color(0xff1f2937),
-        borderRadius: BorderRadius.circular(20),
+// --- Reusable UI Components ---
+
+class CategoriesFilter extends StatelessWidget {
+  const CategoriesFilter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: const [
+          CategoryPill(label: 'All', isSelected: true),
+          CategoryPill(label: 'Hackathons', isSelected: false),
+          CategoryPill(label: 'Internships', isSelected: false),
+          CategoryPill(label: 'Workshops', isSelected: false),
+        ],
       ),
-      child: Text(label, style: const TextStyle(color: Colors.white)),
     );
   }
+}
 
-  Widget _eventCard({
-    required String title,
-    required String location,
-    required String date,
-    required String description,
-    required List<String> tags,
-    required String cta,
-  }) {
+class CategoryPill extends StatelessWidget {
+  final String label;
+  final bool isSelected;
+
+  const CategoryPill({
+    super.key,
+    required this.label,
+    required this.isSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Light theme pill colors
+    const Color unselectedPillColor = Color(
+      0xFFE0E0E0,
+    ); // Light gray for unselected
+    const Color selectedTextColor = Colors.white;
+    const Color unselectedTextColor = Colors.black87;
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: Chip(
+        label: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? selectedTextColor : unselectedTextColor,
+            fontWeight: FontWeight.w500,
+            fontSize: 13,
+          ),
+        ),
+        backgroundColor: isSelected ? Colors.blue : unselectedPillColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
+      ),
+    );
+  }
+}
+
+class OpportunityCard extends StatelessWidget {
+  final String title;
+  final String details;
+  final String location;
+  final String date;
+  final List<String> tags;
+  final bool isEvent;
+  final Color cardBackgroundColor; // Passed in for light theme
+  final Color darkTextColor;
+  final Color lightIconColor;
+
+  const OpportunityCard({
+    super.key,
+    required this.title,
+    required this.details,
+    required this.location,
+    required this.date,
+    required this.tags,
+    required this.isEvent,
+    required this.cardBackgroundColor,
+    required this.darkTextColor,
+    required this.lightIconColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: const Color(0xff1f2937),
-        borderRadius: BorderRadius.circular(16),
+        color: cardBackgroundColor,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 3), // changes position of shadow
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
+            style: TextStyle(
+              color: darkTextColor,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),
+          const SizedBox(height: 8),
 
-          const SizedBox(height: 12),
-
+          // Location and Date Row
           Row(
             children: [
-              const Icon(Icons.location_on, size: 16, color: Colors.white70),
+              Icon(
+                isEvent ? Icons.location_on : Icons.laptop_chromebook,
+                size: 14,
+                color: lightIconColor,
+              ),
               const SizedBox(width: 4),
-              Text(location, style: const TextStyle(color: Colors.white70)),
-              const SizedBox(width: 12),
-              const Icon(Icons.calendar_today, size: 16, color: Colors.white70),
+              Text(
+                location,
+                style: TextStyle(
+                  color: darkTextColor.withOpacity(0.7),
+                  fontSize: 13,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Icon(Icons.calendar_today, size: 14, color: lightIconColor),
               const SizedBox(width: 4),
-              Text(date, style: const TextStyle(color: Colors.white70)),
+              Text(
+                date,
+                style: TextStyle(
+                  color: darkTextColor.withOpacity(0.7),
+                  fontSize: 13,
+                ),
+              ),
             ],
           ),
-
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
 
           Text(
-            description,
-            style: const TextStyle(color: Colors.white70, height: 1.4),
+            details,
+            style: TextStyle(
+              color: darkTextColor.withOpacity(0.7),
+              fontSize: 14,
+            ),
           ),
+          const SizedBox(height: 12),
 
-          const SizedBox(height: 16),
-
-          Wrap(
-            spacing: 8,
-            children: tags
-                .map(
-                  (tag) => Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 4,
-                      horizontal: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.green.shade700,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      tag,
-                      style: const TextStyle(color: Colors.white, fontSize: 12),
+          // Tags and Action Row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.bookmark_border, color: lightIconColor, size: 20),
+                  const SizedBox(width: 8), // Separator for the bookmark icon
+                  ...tags.map(
+                    (tag) => Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: TagPill(label: tag),
                     ),
                   ),
-                )
-                .toList(),
-          ),
+                ],
+              ),
 
-          const SizedBox(height: 16),
-
-          Align(
-            alignment: Alignment.centerRight,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 10,
+              // Apply Now / Register Button
+              SizedBox(
+                height: 36, // Adjust height to match the screenshot look
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Handle button tap
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 0,
+                    ),
+                  ),
+                  child: Text(
+                    isEvent ? 'Register' : 'Apply Now',
+                    style: const TextStyle(fontSize: 14),
+                  ),
                 ),
               ),
-              child: Text(
-                cta,
-                style: const TextStyle(fontSize: 14, color: Colors.white),
-              ),
-            ),
+            ],
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _emptyCard() {
+class TagPill extends StatelessWidget {
+  final String label;
+
+  const TagPill({super.key, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    // Light theme tag colors
+    Color tagColor = const Color(
+      0xFFC8E6C9,
+    ); // Light green for "Beginner-Friendly"
+    Color textColor = const Color(0xFF388E3C); // Dark green text
+
+    if (label == 'Paid') {
+      tagColor = const Color(0xFFFFF9C4); // Light yellow
+      textColor = const Color(0xFFAFB42B); // Dark yellow text
+    } else if (label == 'Remote') {
+      tagColor = const Color(0xFFBBDEFB); // Light blue
+      textColor = const Color(0xFF1976D2); // Dark blue text
+    }
+
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xff1f2937),
-        borderRadius: BorderRadius.circular(16),
+        color: tagColor,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: textColor,
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+}
+
+class NoSeminarsFoundCard extends StatelessWidget {
+  final Color cardBackgroundColor;
+  final Color darkTextColor;
+  final Color lightIconColor;
+
+  const NoSeminarsFoundCard({
+    super.key,
+    required this.cardBackgroundColor,
+    required this.darkTextColor,
+    required this.lightIconColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(24.0),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: cardBackgroundColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.grey.shade300,
+        ), // Subtle border for light theme
       ),
       child: Column(
         children: [
-          const Icon(Icons.close, size: 30, color: Colors.white54),
+          // Calendar Icon with X
+          Icon(Icons.calendar_today_outlined, color: lightIconColor, size: 40),
           const SizedBox(height: 12),
-          const Text(
-            "No Seminars Found",
-            style: TextStyle(color: Colors.white, fontSize: 16),
+          Text(
+            'No Seminars Found',
+            style: TextStyle(
+              color: darkTextColor,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const SizedBox(height: 6),
-          const Text(
-            "Try selecting a different category to find new opportunities.",
+          const SizedBox(height: 4),
+          Text(
+            'Try selecting a different event category to find\nnew opportunities.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white60, fontSize: 13),
+            style: TextStyle(
+              color: darkTextColor.withOpacity(0.7),
+              fontSize: 13,
+            ),
           ),
         ],
       ),
